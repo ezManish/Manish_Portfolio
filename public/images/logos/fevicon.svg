@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="ubGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E95420"/>
+      <stop offset="65%" stop-color="#77216F"/>
+      <stop offset="100%" stop-color="#2C001E"/>
+    </linearGradient>
+  </defs>
+  <circle cx="32" cy="32" r="31" fill="url(#ubGrad)" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+  <polygon fill="#FFFFFF" points="14,48 14,16 22,16 32,32 42,16 50,16 50,48 43,48 43,26 33.5,41 30.5,41 21,26 21,48"/>
+</svg>
