@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="docBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#EDEDED"/>
+    </linearGradient>
+    <linearGradient id="foldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D0D0D0"/>
+      <stop offset="100%" stop-color="#BFBFBF"/>
+    </linearGradient>
+    <linearGradient id="pdfBadge" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E95420"/>
+      <stop offset="100%" stop-color="#C73E0E"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Document Body with Shadow -->
+  <path d="M 28 16 L 78 16 L 100 38 L 100 112 C 100 115 97 118 93 118 L 28 118 C 24 118 21 115 21 112 L 21 22 C 21 19 24 16 28 16 Z" fill="url(#docBg)" filter="url(#shadow)"/>
+
+  <!-- Folded Corner -->
+  <path d="M 78 16 L 100 38 L 81 38 C 79 38 78 37 78 35 Z" fill="url(#foldGrad)"/>
+
+  <!-- Document Text Lines -->
+  <rect x="32" y="36" width="34" height="4" rx="2" fill="#B0B0B0"/>
+  <rect x="32" y="48" width="58" height="3" rx="1.5" fill="#C8C8C8"/>
+  <rect x="32" y="58" width="54" height="3" rx="1.5" fill="#C8C8C8"/>
+  <rect x="32" y="68" width="58" height="3" rx="1.5" fill="#C8C8C8"/>
+  <rect x="32" y="78" width="48" height="3" rx="1.5" fill="#C8C8C8"/>
+
+  <!-- PDF Badge Ribbon -->
+  <rect x="21" y="88" width="58" height="22" rx="4" fill="url(#pdfBadge)"/>
+  <text x="50" y="104" font-family="'Ubuntu', -apple-system, sans-serif" font-weight="900" font-size="13" fill="#FFFFFF" text-anchor="middle" letter-spacing="1">PDF</text>
+</svg>

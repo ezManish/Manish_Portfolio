@@ -31,7 +31,8 @@ The entire interface is responsive, supporting desktop mouse interactions, keybo
 | Application | Identifier | Description |
 | :--- | :--- | :--- |
 | **About Manish** | `about-manish` | Tabbed portfolio interface covering biography, education, technical skills, detailed project showcases with interactive image switchers, and integrated resume viewer. |
-| **Terminal** | `terminal` | Simulated Linux bash shell supporting directory navigation (`cd`, `ls`, `pwd`), file inspection (`cat`), folder creation (`mkdir`), command history, autocompletion, and application launching commands. |
+| **Resume.pdf** | `resume` | Native GNOME Document Viewer (Evince) dedicated to Manish's official resume, featuring one-click PDF downloading, external viewing, and responsive layout. |
+| **Terminal** | `terminal` | Simulated Linux bash shell supporting `neofetch` with ASCII art & system specs, `resume`, `projects`, `skills`, Tab key auto-completion, command history, directory navigation (`cd`, `ls`, `pwd`), folder creation (`mkdir`), and application launching. |
 | **Minesweeper** | `minesweeper` | Tactical GNOME Minesweeper with Beginner (9x9), Intermediate (16x16), and Expert (30x16) modes. Features double-click / double-tap flag toggling, press-and-hold touch flagging, adaptive zero-scroll viewport scaling, timer, and mine counters. |
 | **2048** | `game-2048` | Sliding tile puzzle game. Supports keyboard arrow keys and touch swipe gestures, with local storage high score tracking and clean responsive tile scaling. |
 | **Google Chrome** | `chrome` | Browser simulator featuring a working navigation address bar, bookmark bar, and Manish's GitHub profile interface. |
@@ -65,6 +66,7 @@ Manish/
 │   │   ├── image_viewer.js     # Image preview utility
 │   │   ├── manish_portfolio.js # Resume and portfolio presentation app
 │   │   ├── minesweeper.js      # Minesweeper tactical game
+│   │   ├── resume.js           # GNOME Document Viewer (Evince) resume application
 │   │   ├── settings.js         # Wallpaper and system settings
 │   │   ├── spotify.js          # Spotify web player embed
 │   │   ├── terminal.js         # Linux terminal emulator and command interpreter

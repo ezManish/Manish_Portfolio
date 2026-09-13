@@ -1,5 +1,5 @@
-import displaySpotify from './components/apps/spotify';
-import displayVsCode from './components/apps/vscode';
+import React from 'react';
+import dynamic from 'next/dynamic';
 import { displayTerminal } from './components/apps/terminal';
 import { displaySettings } from './components/apps/settings';
 import { displayChrome } from './components/apps/chrome';
@@ -8,8 +8,26 @@ import { displayGedit } from './components/apps/gedit';
 import { displayAboutManish } from './components/apps/manish_portfolio';
 import { displayTerminalCalc } from './components/apps/calc';
 import { displayImageViewer } from './components/apps/image_viewer';
-import { displayMinesweeper } from './components/apps/minesweeper';
-import { display2048 } from './components/apps/game2048';
+
+const LoadingApp = () => (
+    <div className="w-full h-full flex flex-col items-center justify-center bg-[#242424] text-gray-300">
+        <div className="w-7 h-7 border-2 border-ub-orange border-t-transparent rounded-full animate-spin"></div>
+        <span className="mt-3 text-xs tracking-wider text-gray-400 font-mono">Loading application...</span>
+    </div>
+);
+
+// Code-split heavy secondary apps to optimize initial page bundle size
+const SpotifyApp = dynamic(() => import('./components/apps/spotify'), { ssr: false, loading: () => <LoadingApp /> });
+const VsCodeApp = dynamic(() => import('./components/apps/vscode'), { ssr: false, loading: () => <LoadingApp /> });
+const MinesweeperApp = dynamic(() => import('./components/apps/minesweeper'), { ssr: false, loading: () => <LoadingApp /> });
+const Game2048App = dynamic(() => import('./components/apps/game2048'), { ssr: false, loading: () => <LoadingApp /> });
+const ResumeApp = dynamic(() => import('./components/apps/resume'), { ssr: false, loading: () => <LoadingApp /> });
+
+const displaySpotify = () => <SpotifyApp />;
+const displayVsCode = () => <VsCodeApp />;
+const displayMinesweeper = () => <MinesweeperApp />;
+const display2048 = () => <Game2048App />;
+const displayResume = () => <ResumeApp />;
 
 const apps = [
     {
@@ -38,6 +56,15 @@ const apps = [
         favourite: true,
         desktop_shortcut: true,
         screen: displayAboutManish,
+    },
+    {
+        id: "resume",
+        title: "Resume.pdf",
+        icon: './themes/Yaru/apps/evince.svg',
+        disabled: false,
+        favourite: true,
+        desktop_shortcut: true,
+        screen: displayResume,
     },
     {
         id: "minesweeper",
@@ -129,6 +156,6 @@ const apps = [
         desktop_shortcut: false,
         screen: displayImageViewer,
     },
-]
+];
 
 export default apps;
