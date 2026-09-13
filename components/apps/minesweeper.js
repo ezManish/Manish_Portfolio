@@ -128,7 +128,6 @@ export class MinesweeperApp extends Component {
         super(props);
         const { rows, cols } = LEVELS.beginner;
         this.appRootRef = createRef();
-        this.stageRef = createRef();
         this.state = {
             level: 'beginner',
             rows, cols,
@@ -139,8 +138,6 @@ export class MinesweeperApp extends Component {
             timeElapsed: 0,
             detonated: -1,
             isMobile: false,
-            stageWidth: 0,
-            stageHeight: 0,
         };
         this.timerRef = null;
         this.longPressTimer = null;
@@ -159,10 +156,6 @@ export class MinesweeperApp extends Component {
             this.appRootRef.current.addEventListener('contextmenu', this.preventNativeContextMenu, true);
         }
         this.handleWindowResize();
-        this.updateStageDimensions();
-        // Measure stage again after initial layout render
-        setTimeout(this.updateStageDimensions, 100);
-        setTimeout(this.updateStageDimensions, 350);
     }
 
     componentWillUnmount() {
@@ -190,18 +183,6 @@ export class MinesweeperApp extends Component {
         if (isMobile !== this.state.isMobile) {
             this.setState({ isMobile });
         }
-        this.updateStageDimensions();
-    };
-
-    updateStageDimensions = () => {
-        if (this.stageRef.current) {
-            const rect = this.stageRef.current.getBoundingClientRect();
-            if (rect.width > 0 && rect.height > 0) {
-                if (Math.abs(rect.width - this.state.stageWidth) > 3 || Math.abs(rect.height - this.state.stageHeight) > 3) {
-                    this.setState({ stageWidth: rect.width, stageHeight: rect.height });
-                }
-            }
-        }
     };
 
     handleKeyDown = (e) => {
@@ -227,8 +208,6 @@ export class MinesweeperApp extends Component {
             flagCount: 0,
             timeElapsed: 0,
             detonated: -1,
-        }, () => {
-            setTimeout(this.updateStageDimensions, 50);
         });
     };
 
@@ -437,44 +416,26 @@ export class MinesweeperApp extends Component {
         this.setState({ cells: newCells, flagCount });
     };
 
-    // Calculate optimal responsive tile dimensions based on container width/height
+    // Calculate optimal responsive tile dimensions deterministically
     getDynamicSizes() {
-        const { level, cols, rows, stageWidth, stageHeight, isMobile } = this.state;
-        
-        // Estimate fallback available dimensions if container not yet mounted
-        const fallbackW = typeof window !== 'undefined' ? (isMobile ? window.innerWidth - 20 : 440) : 380;
-        const fallbackH = typeof window !== 'undefined' ? (isMobile ? window.innerHeight - 200 : 440) : 380;
-        
-        const padX = isMobile ? 12 : 24;
-        const padY = isMobile ? 12 : 24;
-        const availW = Math.max((stageWidth || fallbackW) - padX, 60);
-        const availH = Math.max((stageHeight || fallbackH) - padY, 60);
-        
-        const gap = cols > 16 ? 1 : 1.5;
-        // Maximum tile size that fits entirely horizontally
-        const fitTileW = Math.floor((availW - (cols * gap)) / cols);
-        // Maximum tile size that fits entirely vertically
-        const fitTileH = Math.floor((availH - (rows * gap)) / rows);
-
-        let tileSize;
+        const { level, isMobile } = this.state;
+        let tileSize = 36;
         if (level === 'beginner') {
-            // 9x9: Always comfortably sized and fits completely without scrolling
-            tileSize = Math.min(38, Math.max(26, Math.min(fitTileW, fitTileH)));
+            tileSize = isMobile ? 32 : 36;
         } else if (level === 'intermediate') {
-            // 16x16: MUST fit on mobile screens without scrolling!
-            tileSize = Math.min(24, Math.max(16, Math.min(fitTileW, fitTileH)));
+            tileSize = isMobile ? 19 : 24;
         } else {
-            // 30x16: Fits vertically, pans smoothly horizontally on small portrait screens; fits both in landscape
-            if (isMobile && fitTileW < 16) {
-                tileSize = Math.min(22, Math.max(17, fitTileH));
-            } else {
-                tileSize = Math.min(22, Math.max(16, Math.min(fitTileW, fitTileH)));
-            }
+            tileSize = isMobile ? 17 : 22;
         }
-
-        const fontSize = Math.max(10, Math.floor(tileSize * 0.58));
-        const markerSize = Math.max(8, tileSize - 7);
-        return { tileSize, fontSize, markerSize, gap };
+        const gap = 1.5;
+        const fontSize = Math.max(10, Math.floor(tileSize * 0.55));
+        const markerSize = Math.max(8, tileSize - 8);
+        return {
+            tileSize,
+            fontSize,
+            markerSize,
+            gap,
+        };
     }
 
     render() {
@@ -607,84 +568,80 @@ export class MinesweeperApp extends Component {
                 )}
 
                 {/* ── Main Tactical Game Grid Stage (Adaptive & Zero-Scroll on 9x9 and 16x16) ── */}
-                <div
-                    ref={this.stageRef}
-                    className="flex-1 flex flex-col items-center justify-center p-1 sm:p-3 overflow-auto w-full min-h-0"
-                >
-                    <div className="p-1 sm:p-2.5 rounded-xl bg-[#181818] border border-white border-opacity-10 shadow-2xl max-w-full max-h-full overflow-auto touch-pan-x touch-pan-y">
+                <div className="flex-1 flex flex-col items-center justify-center p-2 sm:p-4 overflow-auto w-full min-h-0">
+                    <div className="p-2 sm:p-3 rounded-xl bg-[#181818] border border-white border-opacity-10 shadow-2xl w-fit h-fit max-w-full max-h-full overflow-auto touch-pan-x touch-pan-y">
                         <div
                             style={{
                                 display: 'grid',
                                 gridTemplateColumns: `repeat(${cols}, ${tileSize}px)`,
+                                gridTemplateRows: `repeat(${rows}, ${tileSize}px)`,
                                 gap: `${gap}px`,
                                 background: '#121212',
                                 padding: `${gap}px`,
                                 borderRadius: '4px',
                             }}
                         >
-                            {Array.from({ length: rows }, (_, r) =>
-                                Array.from({ length: cols }, (_, c) => {
-                                    const idx = r * cols + c;
-                                    const cell = cells[idx];
-                                    const isDetonated = idx === detonated;
+                            {cells.map((cell, idx) => {
+                                const r = Math.floor(idx / cols);
+                                const c = idx % cols;
+                                const isDetonated = idx === detonated;
 
-                                    let cellClasses = "flex items-center justify-center font-bold select-none transition-colors duration-75 rounded-[2px] ";
-                                    let content = null;
+                                let cellClasses = "flex items-center justify-center font-bold select-none transition-colors duration-75 rounded-[2px] ";
+                                let content = null;
 
-                                    if (cell.revealed) {
-                                        if (cell.mine) {
-                                            if (isDetonated) {
-                                                cellClasses += "bg-rose-700 ring-2 ring-rose-400 shadow-md";
-                                                content = <MineGraphic size={markerSize} isDetonated={true} />;
-                                            } else {
-                                                cellClasses += "bg-[#252525] border border-black border-opacity-40";
-                                                content = <MineGraphic size={markerSize} isDetonated={false} />;
-                                            }
+                                if (cell.revealed) {
+                                    if (cell.mine) {
+                                        if (isDetonated) {
+                                            cellClasses += "bg-rose-700 ring-2 ring-rose-400 shadow-md";
+                                            content = <MineGraphic size={markerSize} isDetonated={true} />;
                                         } else {
-                                            cellClasses += "bg-[#1f1e1d] border border-black border-opacity-20";
-                                            if (cell.adj > 0) {
-                                                content = (
-                                                    <span style={{ color: ADJ_COLORS[cell.adj], fontSize: `${fontSize}px`, lineHeight: 1 }}>
-                                                        {cell.adj}
-                                                    </span>
-                                                );
-                                            }
+                                            cellClasses += "bg-[#252525] border border-black border-opacity-40";
+                                            content = <MineGraphic size={markerSize} isDetonated={false} />;
                                         }
                                     } else {
-                                        cellClasses += "bg-[#383735] hover:bg-[#444341] active:bg-[#2b2a28] border-t border-white border-opacity-15 border-b border-black border-opacity-50 cursor-pointer shadow-sm";
-                                        if (cell.flagged) {
-                                            content = <CellMarker size={markerSize} />;
+                                        cellClasses += "bg-[#1f1e1d] border border-black border-opacity-20";
+                                        if (cell.adj > 0) {
+                                            content = (
+                                                <span style={{ color: ADJ_COLORS[cell.adj], fontSize: `${fontSize}px`, lineHeight: 1 }}>
+                                                    {cell.adj}
+                                                </span>
+                                            );
                                         }
                                     }
+                                } else {
+                                    cellClasses += "bg-[#383735] hover:bg-[#444341] active:bg-[#2b2a28] border-t border-white border-opacity-15 border-b border-black border-opacity-50 cursor-pointer shadow-sm";
+                                    if (cell.flagged) {
+                                        content = <CellMarker size={markerSize} />;
+                                    }
+                                }
 
-                                    return (
-                                        <div
-                                            key={idx}
-                                            onClick={(e) => this.handleCellClick(e, r, c)}
-                                            onDoubleClick={(e) => this.handleCellDoubleClick(e, r, c)}
-                                            onContextMenu={(e) => this.handleContextMenu(e, r, c)}
-                                            onTouchStart={(e) => this.handleTouchStart(e, r, c)}
-                                            onTouchMove={this.handleTouchMove}
-                                            onTouchEnd={this.handleTouchEnd}
-                                            onTouchCancel={this.handleTouchEnd}
-                                            onMouseDown={(e) => this.handleMouseDown(e, r, c)}
-                                            onMouseUp={this.handleMouseUp}
-                                            onMouseLeave={this.handleMouseUp}
-                                            className={cellClasses}
-                                            style={{
-                                                width: `${tileSize}px`,
-                                                height: `${tileSize}px`,
-                                                touchAction: 'manipulation',
-                                                WebkitTouchCallout: 'none',
-                                                WebkitUserSelect: 'none',
-                                                userSelect: 'none',
-                                            }}
-                                        >
-                                            {content}
-                                        </div>
-                                    );
-                                })
-                            )}
+                                return (
+                                    <div
+                                        key={idx}
+                                        onClick={(e) => this.handleCellClick(e, r, c)}
+                                        onDoubleClick={(e) => this.handleCellDoubleClick(e, r, c)}
+                                        onContextMenu={(e) => this.handleContextMenu(e, r, c)}
+                                        onTouchStart={(e) => this.handleTouchStart(e, r, c)}
+                                        onTouchMove={this.handleTouchMove}
+                                        onTouchEnd={this.handleTouchEnd}
+                                        onTouchCancel={this.handleTouchEnd}
+                                        onMouseDown={(e) => this.handleMouseDown(e, r, c)}
+                                        onMouseUp={this.handleMouseUp}
+                                        onMouseLeave={this.handleMouseUp}
+                                        className={cellClasses}
+                                        style={{
+                                            width: `${tileSize}px`,
+                                            height: `${tileSize}px`,
+                                            touchAction: 'manipulation',
+                                            WebkitTouchCallout: 'none',
+                                            WebkitUserSelect: 'none',
+                                            userSelect: 'none',
+                                        }}
+                                    >
+                                        {content}
+                                    </div>
+                                );
+                            })}
                         </div>
                     </div>
                 </div>
