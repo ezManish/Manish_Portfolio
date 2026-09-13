@@ -7,12 +7,16 @@ export class Window extends Component {
     constructor() {
         super();
         this.id = null;
-        this.startX = 60;
-        this.startY = 10;
+        let isMobile = false;
+        if (typeof window !== 'undefined') {
+            isMobile = window.innerWidth < 640;
+        }
+        this.startX = isMobile ? 4 : 60;
+        this.startY = isMobile ? 4 : 10;
         this.state = {
             cursorType: "cursor-default",
-            width: 60,
-            height: 85,
+            width: isMobile ? 98 : 60,
+            height: isMobile ? 86 : 85,
             closed: false,
             maximized: false,
             parentSize: {
@@ -28,6 +32,9 @@ export class Window extends Component {
 
         // on window resize, resize boundary
         window.addEventListener('resize', this.resizeBoundries);
+
+        setTimeout(this.checkOverlap, 50);
+        setTimeout(this.checkOverlap, 200);
     }
 
     componentWillUnmount() {
@@ -36,9 +43,13 @@ export class Window extends Component {
 
     setDefaultWindowDimenstion = () => {
         if (window.innerWidth < 640) {
-            this.setState({ height: 60, width: 85 }, this.resizeBoundries);
+            this.startX = 4;
+            this.startY = 4;
+            this.setState({ height: 86, width: 98 }, this.resizeBoundries);
         }
         else {
+            this.startX = 60;
+            this.startY = 10;
             this.setState({ height: 85, width: 60 }, this.resizeBoundries);
         }
     }
@@ -54,6 +65,7 @@ export class Window extends Component {
                     - (window.innerWidth * (this.state.width / 100.0)) //this window's width
             }
         });
+        setTimeout(this.checkOverlap, 50);
     }
 
     changeCursorToMove = () => {
@@ -77,16 +89,19 @@ export class Window extends Component {
     }
 
     setWinowsPosition = () => {
-        var r = document.querySelector("#" + this.id);
+        var r = document.getElementById(this.id);
+        if (!r) return;
         var rect = r.getBoundingClientRect();
         r.style.setProperty('--window-transform-x', rect.x.toFixed(1).toString() + "px");
         r.style.setProperty('--window-transform-y', (rect.y.toFixed(1) - 32).toString() + "px");
     }
 
     checkOverlap = () => {
-        var r = document.querySelector("#" + this.id);
+        var r = document.getElementById(this.id);
+        if (!r) return;
         var rect = r.getBoundingClientRect();
-        if (rect.x.toFixed(1) < 50) { // if this window overlapps with SideBar
+        const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+        if (isMobile || rect.x < 50) { // if this window overlaps with SideBar or on mobile
             this.props.hideSideBar(this.id, true);
         }
         else {
@@ -105,17 +120,20 @@ export class Window extends Component {
         }
         this.setWinowsPosition();
         // get corrosponding sidebar app's position
-        var r = document.querySelector("#sidebar-" + this.id);
-        var sidebBarApp = r.getBoundingClientRect();
+        var sideBarElem = document.getElementById("sidebar-" + this.id);
+        var sidebBarApp = sideBarElem ? sideBarElem.getBoundingClientRect() : { y: 240 };
 
-        r = document.querySelector("#" + this.id);
+        var r = document.getElementById(this.id);
         // translate window to that position
-        r.style.transform = `translate(${posx}px,${sidebBarApp.y.toFixed(1) - 240}px) scale(0.2)`;
+        if (r) {
+            r.style.transform = `translate(${posx}px,${sidebBarApp.y.toFixed(1) - 240}px) scale(0.2)`;
+        }
         this.props.hasMinimised(this.id);
     }
 
     restoreWindow = () => {
-        var r = document.querySelector("#" + this.id);
+        var r = document.getElementById(this.id);
+        if (!r) return;
         this.setDefaultWindowDimenstion();
         // get previous position
         let posx = r.style.getPropertyValue("--window-transform-x");
@@ -134,10 +152,12 @@ export class Window extends Component {
         }
         else {
             this.focusWindow();
-            var r = document.querySelector("#" + this.id);
+            var r = document.getElementById(this.id);
             this.setWinowsPosition();
             // translate window to maximize position
-            r.style.transform = `translate(-1pt,-2pt)`;
+            if (r) {
+                r.style.transform = `translate(-1pt,-2pt)`;
+            }
             this.setState({ maximized: true, height: 96.3, width: 100.2 });
             this.props.hideSideBar(this.id, true);
         }
@@ -170,6 +190,7 @@ export class Window extends Component {
                 <div style={{ width: `${this.state.width}%`, height: `${this.state.height}%` }}
                     className={this.state.cursorType + " " + (this.state.closed ? " closed-window " : "") + (this.state.maximized ? " duration-300 rounded-none" : " rounded-lg rounded-b-none") + (this.props.minimized ? " opacity-0 invisible duration-200 " : "") + (this.props.isFocused ? " z-30 " : " z-20 notFocused") + " opened-window overflow-hidden min-w-1/4 min-h-1/4 main-window absolute window-shadow border-black border-opacity-40 border border-t-0 flex flex-col"}
                     id={this.id}
+                    data-window={this.id}
                 >
                     <WindowYBorder resize={this.handleHorizontalResize} />
                     <WindowXBorder resize={this.handleVerticleResize} />

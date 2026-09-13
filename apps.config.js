@@ -8,6 +8,8 @@ import { displayGedit } from './components/apps/gedit';
 import { displayAboutManish } from './components/apps/manish_portfolio';
 import { displayTerminalCalc } from './components/apps/calc';
 import { displayImageViewer } from './components/apps/image_viewer';
+import { displayMinesweeper } from './components/apps/minesweeper';
+import { display2048 } from './components/apps/game2048';
 
 const apps = [
     {
@@ -36,6 +38,24 @@ const apps = [
         favourite: true,
         desktop_shortcut: true,
         screen: displayAboutManish,
+    },
+    {
+        id: "minesweeper",
+        title: "Minesweeper",
+        icon: './themes/Yaru/apps/minesweeper.png',
+        disabled: false,
+        favourite: true,
+        desktop_shortcut: true,
+        screen: displayMinesweeper,
+    },
+    {
+        id: "game-2048",
+        title: "2048",
+        icon: './themes/Yaru/apps/2048.svg',
+        disabled: false,
+        favourite: true,
+        desktop_shortcut: true,
+        screen: display2048,
     },
     {
         id: "vscode",

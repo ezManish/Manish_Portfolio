@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" shape-rendering="crispEdges">
+  <!-- ── 2048 Pixel Art Icon (No Gradients, Edgy Pixel Theme) ── -->
+
+  <!-- Edgy Pixelated Squircle Base (Solid Dark Ubuntu Slate #1E1E1E) -->
+  <!-- Shadow offset (Solid #0A0A0A) -->
+  <g fill="#0A0A0A">
+    <rect x="24" y="8" width="84" height="116" />
+    <rect x="16" y="12" width="100" height="108" />
+    <rect x="12" y="16" width="108" height="100" />
+    <rect x="8" y="24" width="116" height="84" />
+  </g>
+
+  <!-- Base Body (Solid #1F1E1E) -->
+  <g fill="#1F1E1E">
+    <rect x="20" y="4" width="88" height="116" />
+    <rect x="12" y="8" width="104" height="108" />
+    <rect x="8" y="12" width="112" height="100" />
+    <rect x="4" y="20" width="120" height="84" />
+  </g>
+
+  <!-- Inner Pixel Border Frame (Solid Ubuntu Charcoal #2C2A29) -->
+  <g fill="#2C2A29">
+    <rect x="20" y="6" width="88" height="2" />
+    <rect x="20" y="116" width="88" height="2" />
+    <rect x="6" y="20" width="2" height="84" />
+    <rect x="116" y="20" width="2" height="84" />
+    <rect x="12" y="10" width="8" height="2" />
+    <rect x="104" y="10" width="8" height="2" />
+    <rect x="12" y="112" width="8" height="2" />
+    <rect x="104" y="112" width="8" height="2" />
+    <rect x="8" y="14" width="4" height="6" />
+    <rect x="112" y="14" width="4" height="6" />
+    <rect x="8" y="104" width="4" height="6" />
+    <rect x="112" y="104" width="4" height="6" />
+  </g>
+
+  <!-- ── 2x2 Edgy Pixel Tiles ── -->
+
+  <!-- TILE 1: "2" (Top-Left, Cream/Sand Tile #EDE0C8) -->
+  <!-- Tile 1 Hard Shadow -->
+  <rect x="16" y="16" width="46" height="46" fill="#111111" />
+  <!-- Tile 1 Stepped Pixel Body -->
+  <g fill="#EDE0C8">
+    <rect x="14" y="12" width="44" height="44" />
+    <!-- Notch corners for pixelated look -->
+    <rect x="16" y="10" width="40" height="48" />
+    <rect x="12" y="14" width="48" height="40" />
+  </g>
+  <!-- Pixel "2" Glyph (3x5 grid, 6px unit, fill #333333) -->
+  <g fill="#333333">
+    <!-- Row 0: ### -->
+    <rect x="26" y="20" width="20" height="4" />
+    <!-- Row 1:   # -->
+    <rect x="42" y="24" width="4" height="6" />
+    <!-- Row 2: ### -->
+    <rect x="26" y="30" width="20" height="4" />
+    <!-- Row 3: #   -->
+    <rect x="26" y="34" width="4" height="6" />
+    <!-- Row 4: ### -->
+    <rect x="26" y="40" width="20" height="4" />
+  </g>
+
+  <!-- TILE 2: "0" (Top-Right, Amber/Gold Tile #F59E0B) -->
+  <!-- Tile 2 Hard Shadow -->
+  <rect x="70" y="16" width="46" height="46" fill="#111111" />
+  <!-- Tile 2 Stepped Pixel Body -->
+  <g fill="#F59E0B">
+    <rect x="68" y="12" width="44" height="44" />
+    <rect x="70" y="10" width="40" height="48" />
+    <rect x="66" y="14" width="48" height="40" />
+  </g>
+  <!-- Pixel "0" Glyph (fill #1E1E1E) -->
+  <g fill="#1E1E1E">
+    <!-- Row 0: ### -->
+    <rect x="80" y="20" width="20" height="4" />
+    <!-- Row 1: # # -->
+    <rect x="80" y="24" width="4" height="16" />
+    <rect x="96" y="24" width="4" height="16" />
+    <!-- Row 4: ### -->
+    <rect x="80" y="40" width="20" height="4" />
+  </g>
+
+  <!-- TILE 3: "4" (Bottom-Left, Signature Ubuntu Orange Tile #E95420) -->
+  <!-- Tile 3 Hard Shadow -->
+  <rect x="16" y="70" width="46" height="46" fill="#111111" />
+  <!-- Tile 3 Stepped Pixel Body -->
+  <g fill="#E95420">
+    <rect x="14" y="66" width="44" height="44" />
+    <rect x="16" y="64" width="40" height="48" />
+    <rect x="12" y="68" width="48" height="40" />
+  </g>
+  <!-- Pixel "4" Glyph (fill #FFFFFF) -->
+  <g fill="#FFFFFF">
+    <!-- Row 0-1: # # -->
+    <rect x="26" y="74" width="4" height="12" />
+    <rect x="42" y="74" width="4" height="20" />
+    <!-- Row 2:   ### -->
+    <rect x="26" y="84" width="20" height="4" />
+    <!-- Row 3-4:   # -->
+    <rect x="42" y="88" width="4" height="6" />
+  </g>
+
+  <!-- TILE 4: "8" (Bottom-Right, Ubuntu Aubergine Tile #77216F) -->
+  <!-- Tile 4 Hard Shadow -->
+  <rect x="70" y="70" width="46" height="46" fill="#111111" />
+  <!-- Tile 4 Stepped Pixel Body -->
+  <g fill="#77216F">
+    <rect x="68" y="66" width="44" height="44" />
+    <rect x="70" y="64" width="40" height="48" />
+    <rect x="66" y="68" width="48" height="40" />
+  </g>
+  <!-- Pixel "8" Glyph (fill #FFFFFF) -->
+  <g fill="#FFFFFF">
+    <!-- Row 0: ### -->
+    <rect x="80" y="74" width="20" height="4" />
+    <!-- Row 1: # # -->
+    <rect x="80" y="78" width="4" height="6" />
+    <rect x="96" y="78" width="4" height="6" />
+    <!-- Row 2: ### -->
+    <rect x="80" y="82" width="20" height="4" />
+    <!-- Row 3: # # -->
+    <rect x="80" y="86" width="4" height="6" />
+    <rect x="96" y="86" width="4" height="6" />
+    <!-- Row 4: ### -->
+    <rect x="80" y="90" width="20" height="4" />
+  </g>
+</svg>

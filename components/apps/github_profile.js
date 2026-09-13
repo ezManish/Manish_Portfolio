@@ -417,8 +417,8 @@ export class GitHubProfile extends Component {
                                         <span>·</span>
                                         <span>📍 India</span>
                                         <span>·</span>
-                                        <a href="https://ezmanish.github.io/Manish_Portfolio/" target="_blank" rel="noopener noreferrer" className="text-[#58a6ff] hover:underline">
-                                            ezmanish.github.io
+                                        <a href="https://ezmanish.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-[#58a6ff] hover:underline">
+                                            ezmanish.vercel.app
                                         </a>
                                     </div>
                                 </div>
@@ -480,8 +480,8 @@ export class GitHubProfile extends Component {
                                     </div>
                                     <div className="flex items-center space-x-2">
                                         <span>🔗</span>
-                                        <a href="https://ezmanish.github.io/Manish_Portfolio/" target="_blank" rel="noopener noreferrer" className="text-[#58a6ff] hover:underline truncate">
-                                            ezmanish.github.io
+                                        <a href="https://ezmanish.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-[#58a6ff] hover:underline truncate">
+                                            ezmanish.vercel.app
                                         </a>
                                     </div>
                                 </div>

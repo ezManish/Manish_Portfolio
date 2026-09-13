@@ -32,10 +32,12 @@ export default function Meta() {
             <meta name="og:description"
                 content="Manish Kumar's (ezManish) Personal Portfolio Website. Made with Ubuntu 20.04 (Linux) theme by Next.js and Tailwind CSS." />
             <meta name="og:image" content="images/logos/logo_1200.png" />
-            <meta name="og:url" content="https://github.com/ezManish/Manish_Portfolio" />
+            <meta name="og:url" content="https://ezmanish.vercel.app/" />
+            <meta property="og:url" content="https://ezmanish.vercel.app/" />
             <meta name="og:site_name" content="Manish Kumar Personal Portfolio" />
             <meta name="og:locale" content="en_IN" />
             <meta name="og:type" content="website" />
+            <link rel="canonical" href="https://ezmanish.vercel.app/" />
 
             <link rel="icon" href="images/logos/fevicon.svg" />
             <link rel="apple-touch-icon" href="images/logos/logo.png" />

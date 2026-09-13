@@ -1,8 +1,8 @@
 {
-  "name": "manish-portfolio",
-  "version": "1.0.0",
+  "name": "manish-kumar-portfolio",
+  "version": "0.1.0",
   "private": true,
-  "homepage": "https://ezmanish.github.io/Manish_Portfolio/",
+  "homepage": "https://ezmanish.vercel.app/",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

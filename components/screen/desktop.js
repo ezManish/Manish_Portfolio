@@ -6,7 +6,6 @@ import Window from '../base/window';
 import UbuntuApp from '../base/ubuntu_app';
 import AllApplications from '../screen/all-applications'
 import DesktopMenu from '../context menus/desktop-menu';
-import DefaultMenu from '../context menus/default';
 import $ from 'jquery';
 
 export class Desktop extends Component {
@@ -84,14 +83,66 @@ export class Desktop extends Component {
     }
 
     checkContextMenu = (e) => {
+        // If event was handled and prevented by an application, do nothing
+        if (e.defaultPrevented) return;
+
+        // Check if right click originated inside any application window
+        if (e.target && e.target.closest) {
+            if (e.target.closest('.main-window, .windowMainScreen, .opened-window, [data-window], [data-app], .minesweeper-app, #minesweeper, #game-2048')) {
+                return;
+            }
+        }
+
+        let el = e.target;
+        while (el && el !== document.body && el !== document.documentElement) {
+            if (el.classList && (
+                el.classList.contains("main-window") ||
+                el.classList.contains("windowMainScreen") ||
+                el.classList.contains("opened-window") ||
+                el.classList.contains("window-shadow") ||
+                el.classList.contains("minesweeper-app")
+            )) {
+                return;
+            }
+            if (el.dataset && (el.dataset.window || el.dataset.app)) {
+                return;
+            }
+            if (el.id && (
+                el.id === "minesweeper" ||
+                el.id === "game-2048" ||
+                (this.state.closed_windows && this.state.closed_windows[el.id] === false)
+            )) {
+                return;
+            }
+            el = el.parentElement || el.parentNode;
+        }
+
+        if (e.composedPath) {
+            const path = e.composedPath();
+            for (let item of path) {
+                if (item && item.classList && (
+                    item.classList.contains("main-window") ||
+                    item.classList.contains("windowMainScreen") ||
+                    item.classList.contains("opened-window") ||
+                    item.classList.contains("minesweeper-app")
+                )) {
+                    return;
+                }
+                if (item && item.dataset && (item.dataset.window || item.dataset.app)) {
+                    return;
+                }
+                if (item && item.id && (item.id === "minesweeper" || item.id === "game-2048")) {
+                    return;
+                }
+            }
+        }
+
         e.preventDefault();
         this.hideAllContextMenu();
-        switch (e.target.dataset.context) {
-            case "desktop-area":
-                this.showContextMenu(e, "desktop");
-                break;
-            default:
-                this.showContextMenu(e, "default");
+
+        const context = e.target && e.target.dataset ? e.target.dataset.context : "";
+        if (context === "desktop-area") {
+            this.showContextMenu(e, "desktop");
         }
     }
 
@@ -358,8 +409,10 @@ export class Desktop extends Component {
             this.focus(objId);
 
             // set window's last position
-            var r = document.querySelector("#" + objId);
-            r.style.transform = `translate(${r.style.getPropertyValue("--window-transform-x")},${r.style.getPropertyValue("--window-transform-y")}) scale(1)`;
+            var r = document.getElementById(objId);
+            if (r) {
+                r.style.transform = `translate(${r.style.getPropertyValue("--window-transform-x")},${r.style.getPropertyValue("--window-transform-y")}) scale(1)`;
+            }
 
             // tell childs that his app has been not minimised
             let minimized_windows = this.state.minimized_windows;
@@ -402,6 +455,9 @@ export class Desktop extends Component {
                 closed_windows[objId] = false; // openes app's window
                 this.setState({ closed_windows, favourite_apps, allAppsView: false }, this.focus(objId));
                 this.app_stack.push(objId);
+                if (typeof window !== 'undefined' && window.innerWidth < 768) {
+                    this.hideSideBar(objId, true);
+                }
             }, 200);
         }
     }
@@ -519,7 +575,6 @@ export class Desktop extends Component {
 
                 {/* Context Menus */}
                 <DesktopMenu active={this.state.context_menus.desktop} openApp={this.openApp} addNewFolder={this.addNewFolder} />
-                <DefaultMenu active={this.state.context_menus.default} />
 
                 {/* Folder Input Name Bar */}
                 {
